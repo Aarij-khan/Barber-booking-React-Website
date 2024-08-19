@@ -19,7 +19,7 @@ function Footer() {
         </ul>
       </div>
     </div>
-    <h2 className="text-center text-white pb-4">© barber Shop . All right reserved</h2>
+    <h2 className="text-center text-white pb-4">© The barber Shop . All right reserved</h2>
     </div>
   );
 }
