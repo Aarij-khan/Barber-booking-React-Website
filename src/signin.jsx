@@ -21,6 +21,8 @@ function Signin() {
         .catch((error) => {
           toast(error.code);
         });
+        setEmail("");
+        setPassword("");
         toast("Signin sucuccessfully");
       }else{
       toast("Enter Fields");
