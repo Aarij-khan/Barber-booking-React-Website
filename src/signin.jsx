@@ -11,17 +11,18 @@ function Signin() {
 
   function LoginToDatabase() {
     if (Email != "" && password != "") {
-      toast("Signin sucuccessfully");
+      
         signInWithEmailAndPassword(auth, Email, password)
-          .then((userCredential) => {
-            const user = userCredential.user;
-            window.location.href= "/dashboard";
-            
-          })
-          .catch((error) => {
-            toast(error.code);
-          });
-    }else{
+        .then((userCredential) => {
+          const user = userCredential.user;
+          window.location.href= "/dashboard";
+          
+        })
+        .catch((error) => {
+          toast(error.code);
+        });
+        toast("Signin sucuccessfully");
+      }else{
       toast("Enter Fields");
     }
    }

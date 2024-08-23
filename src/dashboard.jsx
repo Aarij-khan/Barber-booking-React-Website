@@ -31,11 +31,11 @@ useEffect(()=>{
     })
 },[])
 function signoutUser() {
-  toast("Signout succussfully")
   signOut(auth).then(() => {
-    }).catch((error) => {
-     alert(error)
-    });
+  }).catch((error) => {
+    toast(error)
+  });
+  toast("Signout succussfully")
     
 
 }
