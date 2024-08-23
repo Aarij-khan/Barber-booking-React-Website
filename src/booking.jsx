@@ -1,7 +1,8 @@
 import { db } from "./firebaseconfig/firebase";
 import { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function booking() {
 
   const [inputOne, setInputOne] = useState("");
@@ -19,6 +20,9 @@ function booking() {
     };
     // firebase code start
     async function SetUserInfo() {
+      if (inputOne != "" && inputTwo != "" && inputThree != "" && inputFour != "" && inputFive != "" ) {
+        
+     
         try {
             const docRef = await addDoc(collection(db, "UserInfo"),AllValues);
             console.log("Data added ", docRef);
@@ -32,6 +36,9 @@ function booking() {
           } catch (e) {
             console.error("Error", e);
           }
+        }else{
+          toast("Please enter Fields")
+        }
     }
     
 
@@ -102,6 +109,7 @@ function booking() {
       >
         Submit
       </button>
+      <ToastContainer/>
     </div>
   );
 }
