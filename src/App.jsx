@@ -4,6 +4,7 @@ import Booking from "./booking";
 import Dashboard from "./dashboard";
 import Merge from "./merge";
 import Signin from "./signin";
+import Viewpage from "./Viewpage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/booking" element={<Booking/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/signin" element={<Signin/>} />
+        <Route path="/viewpage" element={<Viewpage/>} />
       </Routes>
      </BrowserRouter>
     </div>

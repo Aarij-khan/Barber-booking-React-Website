@@ -4,34 +4,44 @@ import { db } from "./firebaseconfig/firebase";
 import { auth } from "./firebaseconfig/firebase";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import Loader from "./loader";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 function Dashboard() {
+  const navigate = useNavigate()
   const [data, setData] = useState([]);
+  const [isLoader, setIsLoader] = useState(false);
 
   async function readUserData() {
     let arr = [];
     const querySnapshot = await getDocs(collection(db, "UserInfo"));
     querySnapshot.forEach((doc) => {
-      arr.push(doc.data());
+      arr.push({...doc.data(),docId:doc.id});
       setData(arr);
     });
   }
 
   useEffect(() => {
     readUserData();
-
     onAuthStateChanged(auth, (user) => {
       if (user) {
         // toast(`Hello ${user.email.split("@")[0]}`)
+        // navigate("/dashboard")
+        console.log("yes");
+        // window.location.href = "/dashboard";
+        
       } else {
-        console.log("No");
         window.location.href = "/signin";
       }
     });
+
   }, []);
   function signoutUser() {
+    setIsLoader(true)
     signOut(auth)
-      .then(() => {})
+      .then(() => {
+        navigate("/signin");
+      })
       .catch((error) => {
         toast(error);
       });
@@ -48,69 +58,53 @@ function Dashboard() {
           className="p-2 bg-orange-400 w-[10 bg-red-300 text-center0px] rounded-xl"
           onClick={signoutUser}
         >
-          Signout
+         {isLoader?<Loader/>:"Signout"} 
         </button>
       </div>
       <hr />
 
-      {/* <div className="w-full flex justify-between items-center p-4  ">
-        <h1 className="text-orange-400 uppercase text-xl ">S no</h1>
-        <h1 className="text-orange-400 uppercase text-xl ">Customer Name</h1>
-        <h1 className="text-orange-400 uppercase text-xl ">Lastname</h1>
-        <h1 className="text-orange-400 uppercase text-xl ">Plans</h1>
-        <h1 className="text-orange-400 uppercase text-xl ">Date</h1>
-        <h1 className="text-orange-400 uppercase text-xl ">Time</h1>
-      </div> */}
-
       <div className="text-white py-4 text-xl sm:text-2xl w-full flex">
         <th className="pl-10  text-left w-[19vw] pt-2 hidden sm:block ">S no</th>
-        <td className="sm:pl-10 pl-2 text-left w-[20vw]" colspan="3">
+        <td className="sm:pl-10 pl-2 text-left w-[20vw]" >
         Customer
         </td>
-        <td className="pl-10  text-center w-[20vw] hidden sm:block" colspan="2">
+        <td className="pl-10  text-center w-[20vw] hidden sm:block">
         Lastname
         </td>
-        <td className="sm:pl-10 pl-8  text-center w-[20vw]" colspan="2">
+        <td className="sm:pl-10 pl-8  text-center w-[20vw]">
         Plans
         </td>
-        <td className="sm:pl-10 pl-14  text-center w-[20vw]" colspan="2">
+        <td className="sm:pl-10 pl-14  text-center w-[20vw]">
         Date
         </td>
-        <td className="sm:pl-10 pl-20 text-center   w-[20vw]" colspan="2">
+        <td className="sm:pl-10 pl-20 text-center   w-[20vw]" >
         Time
         </td>
       </div>
       <hr />
       {data.map((e, index) => {
         return (
-          <div className="text-white text-xl w-full  bg-[#222423] flex">
-            <div key={index} className="text-white text-lg sm:text-2xl flex " >
+          <div key={index} className="text-white text-xl w-full  bg-[#222423] flex">
+            <div  className="text-white text-lg sm:text-2xl flex " >
               <th className="pl-10  text-left w-[20vw] pt-2 sm:text-xl hidden sm:block">{index}</th>
-              <td className="sm:pl-6 pl-4 text-left w-[20vw] " colspan="3">
+              <td className="sm:pl-6 pl-4 text-left w-[20vw] " >
                 {e.name}
               </td>
-              <td className="text-center w-[8vw] hidden sm:block" colspan="2">
+              <td className="text-center w-[8vw] hidden sm:block">
                 {e.lastname}
               </td>
-              <td className=" pl-5 text-center w-[23vw]" colspan="2">
+              <td className=" pl-5 text-center w-[23vw]" >
                 {e.plan}
               </td>
-              <td className="  sm:w-[18vw] pl-7 sm:pl-0" colspan="2">
+              <td className="  sm:w-[16vw] pl-7 sm:pl-0">
                 {e.date}
               </td>
-              <td className=" text-center  w-[8vw] pl-7 sm:pl-0" colspan="2">
+              <div className=" text-center  w-[12vw] pl-7 sm:pl-0 flex items-center justify-around" >
                 {e.time}
-              </td>
+              <button className="p-1 m-1 ml-4 bg-orange-400 rounded-lg" onClick={()=>navigate("/viewpage",{state : e})}>View</button>
+              </div>
             </div>
           </div>
-          // <div key={index} className="w-full h-[40px] flex justify-center items-center  gap-[90px] md:gap-[145px] border ">
-          //     <h1 className="text-white mt-2 ">{index}</h1>
-          //     <h1 className="text-white mt-2 ml-[10 bg-red-300 text-center0px] md:ml-[120px]">{e.name}</h1>
-          //     <h1 className="text-white mt-2 ml-[120px] md:ml-[120px]">{e.lastname}</h1>
-          //     <h1 className="text-white mt-2 ml-[110 bg-red-300 text-centerpx] md-ml-[90px]">{e.plan}</h1>
-          //     <h1 className="text-white mt-2">{e.date}</h1>
-          //     <h1 className="text-white mt-2">{e.time}</h1>
-          // </div>
         );
       })}
 
