@@ -17,6 +17,7 @@ function Dashboard() {
     const querySnapshot = await getDocs(collection(db, "UserInfo"));
     querySnapshot.forEach((doc) => {
       arr.push({...doc.data(),docId:doc.id});
+    
       setData(arr);
     });
   }
@@ -37,15 +38,16 @@ function Dashboard() {
 
   }, []);
   function signoutUser() {
-    setIsLoader(true)
+    setIsLoader(true);
     signOut(auth)
       .then(() => {
         navigate("/signin");
+        toast("Signout succussfully");
       })
       .catch((error) => {
         toast(error);
+        setIsLoader(false);
       });
-    toast("Signout succussfully");
   }
   return (
     <div className="bg-[#222423] w-full h-screen">

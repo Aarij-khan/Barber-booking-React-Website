@@ -55,9 +55,9 @@ function booking() {
   }
 
   return (
-    <div className="w-full h-screen bg-[#222423] h-[100%] text-white flex flex-col items-center pb-8">
+    <div className="w-full h-screen bg-[#222423]  text-white flex flex-col items-center pb-8">
       <h1 className="text-center text-5xl font-bold font-serif pt-6 pb-8">
-        Book your <span className="text-orange-400">Availability</span>{" "}
+        Book your <span className="text-orange-400">Availability</span>
       </h1>
       <div className="flex flex-col">
         <label htmlFor="input">Name *</label>
